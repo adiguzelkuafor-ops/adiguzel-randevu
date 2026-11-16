@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
+<style id="cerceve-stil">html{display:none}</style>
+<script src="cerceve.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F4F2ED">
+<meta name="robots" content="noindex">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="simge-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Adıgüzel">
+<title>Yönetim</title>
+<style>
+@font-face{font-family:"Jakarta";src:url("PlusJakartaSans-wght.ttf") format("truetype");font-weight:200 800;font-display:swap}
+:root{
+  --zemin:#F4F2ED; --kart:#FFFFFF; --yazi:#1B1E25; --ikincil:#6B7079; --soluk:#9AA0A8; --cizgi:#ECE8E1;
+  --ana:#0D9488; --ana2:#14B8A6; --ana-acik:#E6F6F4; --ana-koyu:#0B7A70;
+  --asistan:#22C55E; --kapali:#F0614F; --kapali-acik:#FEF1EF; --uyari:#F59E0B; --uyari-acik:#FFF7E6;
+  --golge:0 1px 2px rgba(27,30,37,.05),0 6px 18px rgba(27,30,37,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--zemin);color:var(--yazi)}
+body{font-family:"Jakarta",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100dvh}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input,select{font:inherit;font-size:16px;color:var(--yazi);background:var(--kart);border:1.5px solid var(--cizgi);border-radius:14px;padding:12px 14px;outline:none;width:100%}
+input:focus,select:focus{border-color:var(--ana)}
+[hidden]{display:none!important}
+svg{display:block}
+.ik{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.kap{max-width:520px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top)) 18px calc(110px + env(safe-area-inset-bottom))}
+.serit{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 14px;font-size:13px;line-height:1.4;background:var(--uyari-acik);color:var(--yazi);border-bottom:1px solid var(--cizgi)}
+.serit[hidden]{display:none}
+.serit.kir{background:var(--kapali-acik);color:var(--kapali)}
+.serit button{background:transparent;color:inherit;border:1px solid currentColor;border-radius:8px;padding:4px 10px;font:inherit;cursor:pointer;flex:none}
+#cihazKod{letter-spacing:.3em;font-size:56px}
+.cihaz-satir{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--cizgi);background:var(--kart)}
+.cihaz-satir small{display:block;color:var(--ikincil);font-size:12px;margin-top:2px}
+.cihaz-satir .dugmeler{display:flex;gap:8px;flex:none}
+.deneme{background:var(--uyari);color:var(--yazi);text-align:center;font-size:12px;font-weight:700;letter-spacing:.1em;padding:6px}
+.logo{font-size:12px;letter-spacing:.14em;color:var(--ikincil);text-transform:uppercase;font-weight:700}
+.sayfa-bas{display:flex;justify-content:space-between;align-items:center;margin:6px 0 12px}
+.sayfa-bas h2{font-size:24px;font-weight:800;letter-spacing:-.02em}
+.bolum-bas{font-size:16px;font-weight:800;margin:20px 0 8px;display:flex;justify-content:space-between;align-items:center}
+.bolum-bas button{color:var(--ana);font-size:13px;font-weight:700}
+/* pin */
+.pin{min-height:100dvh;display:flex;flex-direction:column;justify-content:center;padding:0 28px;max-width:420px;margin:0 auto}
+.pin h1{font-size:34px;font-weight:800;letter-spacing:-.02em;padding:8px 0}
+.pin p{color:var(--ikincil);font-size:14px;margin-bottom:22px}
+.pin input{font-size:26px;letter-spacing:.5em;text-align:center;padding:16px}
+.pin .hata{color:var(--kapali);font-size:13px;min-height:20px;margin:10px 0}
+/* düğmeler */
+.ana-d{width:100%;background:linear-gradient(160deg,var(--ana2),var(--ana));color:#fff;border-radius:16px;padding:15px;font-size:16px;font-weight:700;box-shadow:0 6px 14px rgba(13,148,136,.3)}
+.ana-d:disabled{opacity:.5}
+.ikinci-d{width:100%;background:var(--kart);box-shadow:var(--golge);border-radius:16px;padding:14px;font-weight:700;margin-top:10px}
+.tehlike-d{width:100%;background:var(--kapali-acik);border:1px solid #F9CFC8;color:#B93A2B;border-radius:16px;padding:14px;font-weight:700;margin-top:10px}
+.mini{font-size:12px;font-weight:700;padding:6px 11px;border-radius:10px;background:var(--kart);border:1px solid var(--cizgi);white-space:nowrap}
+.mini.am{color:var(--ana-koyu);background:var(--ana-acik);border-color:transparent}
+.mini.kir{color:#B93A2B;background:var(--kapali-acik);border-color:transparent}
+/* bugün: selam, gün şeridi */
+.selam{display:flex;justify-content:space-between;align-items:center;margin:6px 0 14px;gap:10px}
+.selam small{color:var(--ikincil);font-size:13px;font-weight:600}
+.selam h2{font-size:23px;font-weight:800;letter-spacing:-.02em;margin-top:2px;overflow-wrap:anywhere}
+.selam>div{min-width:0}
+.avatar{width:42px;height:42px;flex:none;border-radius:50%;background:linear-gradient(135deg,var(--ana2),var(--ana));color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:var(--golge)}
+.gunler{display:flex;gap:6px;margin:0 -18px 14px;padding:2px 18px 8px;overflow-x:auto;scrollbar-width:none}
+.gunler::-webkit-scrollbar{display:none}
+.g{flex:0 0 50px;background:var(--kart);border-radius:14px;padding:8px 0 9px;text-align:center;box-shadow:var(--golge)}
+.g small{display:block;font-size:11px;color:var(--ikincil);font-weight:600}
+.g b{font-size:17px;font-weight:800}
+.g.sec{background:linear-gradient(160deg,var(--ana2),var(--ana));color:#fff}
+.g.sec small{color:rgba(255,255,255,.85)}
+.g.eski{background:#F7F5F1;box-shadow:none;border:1px dashed #DCD6CC}
+.g.eski b,.g.eski small{color:var(--soluk)}
+.g.eski.sec{background:linear-gradient(160deg,var(--ana2),var(--ana));border-style:solid;border-color:transparent}
+.g.eski.sec b,.g.eski.sec small{color:#fff}
+.hizli{display:flex;gap:10px;margin-bottom:12px}
+.btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;height:48px;border-radius:14px;font-weight:700;font-size:15px}
+.btn.ana{background:linear-gradient(160deg,var(--ana2),var(--ana));color:#fff;box-shadow:0 6px 14px rgba(13,148,136,.3)}
+.btn.ikinci{background:var(--kart);color:var(--yazi);box-shadow:var(--golge)}
+.btn.ikinci .ik{color:var(--kapali)}
+.btn.buyuk{width:100%;flex:none;height:54px;font-size:16px;border-radius:16px;background:linear-gradient(160deg,#F47D6E,var(--kapali));color:#fff;box-shadow:0 8px 18px rgba(240,97,79,.32);margin-top:12px}
+.btn:disabled{opacity:.5}
+.soru-kart{display:flex;gap:12px;align-items:center;background:var(--uyari-acik);border:1px solid #FBE3B4;border-radius:16px;padding:12px 12px 12px 14px;margin-bottom:14px}
+.soru-kart .ik{color:var(--uyari)}
+.soru-kart p{flex:1;min-width:0;font-size:13px;line-height:1.35;overflow-wrap:anywhere}
+.soru-kart p b{display:block;font-size:12px;color:#9A6200}
+.kucuk-btn{background:var(--yazi);color:#fff;font-size:13px;font-weight:700;border-radius:10px;padding:8px 12px;flex:none}
+.hizli-kapat{background:var(--kart);box-shadow:var(--golge);border-radius:16px;padding:12px 14px;margin-bottom:14px}
+.hizli-kapat p{font-size:14px;font-weight:700;margin-bottom:10px}
+.hizli-kapat p small{font-weight:500;color:var(--ikincil)}
+.hizli-kapat div{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.hizli-kapat button{background:var(--kapali-acik);color:#B93A2B;border-radius:12px;padding:10px 0;font-size:14px;font-weight:700}
+.disarida{background:var(--kapali-acik);border:1px solid #F9CFC8;border-radius:16px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.disarida b{color:#B93A2B;font-size:15px;display:block}.disarida small{color:var(--ikincil);font-size:12px}
+.disarida button{background:var(--ana);color:#fff;border-radius:12px;padding:10px 14px;font-weight:700;font-size:14px;white-space:nowrap}
+.liste-baslik{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.liste-baslik h3{font-size:16px;font-weight:800}
+.liste-baslik span{font-size:12.5px;color:var(--ikincil);font-weight:600}
+/* zaman çizgisi */
+.cizelge{display:flex;flex-direction:column;gap:8px}
+.zs{display:flex;gap:10px;align-items:stretch}
+.zsaat{width:44px;flex:none;font-size:13px;font-weight:700;padding-top:12px}
+.zsaat.gecti{color:var(--soluk)}
+.rk{flex:1;min-width:0;background:var(--kart);border-radius:14px;padding:10px 12px;box-shadow:var(--golge);display:flex;align-items:center;gap:10px;border-left:4px solid var(--ana);text-align:left}
+.rk .ad{font-weight:700;font-size:14.5px;overflow-wrap:anywhere}
+.rk .ne{font-size:12.5px;color:var(--ikincil);margin-top:1px}
+.rk .sag{margin-left:auto;font-size:11.5px;font-weight:700;color:var(--ana-koyu);background:var(--ana-acik);padding:4px 8px;border-radius:8px;white-space:nowrap}
+.rk.gecti{opacity:.55;border-left-color:#C9CDD2}
+.rk.gecti .sag{background:#EEF0F2;color:var(--ikincil)}
+.simdi{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:800;color:var(--kapali);margin:-2px 0}
+.simdi::after{content:"";flex:1;height:2px;background:var(--kapali);border-radius:2px}
+.bos{flex:1;min-width:0;border:1.5px dashed #CFC8BC;border-radius:14px;padding:11px 12px;font-size:13.5px;color:var(--ikincil);display:flex;align-items:center;gap:8px;font-weight:600;text-align:left}
+.bos b{color:var(--ana);margin-left:auto;font-weight:700}
+.kapali-blok{flex:1;min-width:0;border-radius:14px;padding:10px 12px;background:repeating-linear-gradient(135deg,var(--kapali-acik) 0 10px,#FDE4E0 10px 20px);border:1px solid #F9CFC8;display:flex;align-items:center;gap:10px}
+.kapali-blok>div{flex:1;min-width:0}
+.kapali-blok b{color:#B93A2B;font-size:14px}
+.kapali-blok p{font-size:12px;color:#8A4A42;margin-top:3px;line-height:1.35;overflow-wrap:anywhere}
+.bos-yazi{color:var(--ikincil);font-size:14px;padding:12px 2px;line-height:1.5}
+/* ayarlar: saatler, hizmetler */
+.gun-satir{background:var(--kart);box-shadow:var(--golge);border-radius:16px;padding:12px 14px;margin-bottom:8px}
+.gun-satir .alt-s{display:flex;gap:8px;align-items:center}
+.gun-satir .alt-s input{padding:9px 6px;font-size:15px;text-align:center}
+input[type=time]::-webkit-calendar-picker-indicator{display:none}
+.gun-satir.tek{display:flex;align-items:center;gap:8px;padding:9px 12px}
+.gun-satir.tek b{width:78px;flex:none;font-size:14px;font-weight:700}
+.gun-satir.tek .alt-s{flex:1;gap:4px}
+.gun-satir.tek .izin-yazi{flex:1;color:#B93A2B;font-size:13px}
+.gun-satir .alt-s span{color:var(--ikincil)}
+.gun-satir.izin b{color:#B93A2B}
+.anah{width:46px;height:26px;border-radius:13px;background:var(--ana);position:relative;flex:none}
+.anah::after{content:"";position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:3px;right:3px;transition:all .15s}
+.anah.kapali{background:#DAD5CC}.anah.kapali::after{right:23px}
+.satir{display:flex;align-items:center;justify-content:space-between;background:var(--kart);box-shadow:var(--golge);border-radius:16px;padding:12px 14px;margin-bottom:8px;font-size:14px;gap:10px}
+.satir.kirmizi span:first-child{color:#B93A2B}
+.hz{display:flex;align-items:center;gap:12px;background:var(--kart);box-shadow:var(--golge);border-radius:16px;padding:12px 14px;margin-bottom:8px;width:100%;text-align:left}
+.hz .ik{width:38px;height:38px;border-radius:12px;background:var(--ana-acik);color:var(--ana-koyu);display:flex;align-items:center;justify-content:center;font-weight:800;flex:none;stroke:none}
+.hz .i{flex:1;min-width:0}.hz .i b{font-size:15px;display:block;overflow-wrap:anywhere}.hz .i small{font-size:12px;color:var(--ikincil)}
+.hz .f{font-size:15px;font-weight:700}
+.hz.pasif{opacity:.5}
+.cipler{display:flex;gap:7px;flex-wrap:wrap}
+.cip{padding:7px 12px;border-radius:12px;background:#fff;border:1.5px solid var(--cizgi);font-size:13.5px;font-weight:700;color:var(--yazi)}
+.cip.sec,.cip.on{background:var(--yazi);color:#fff;border-color:var(--yazi)}
+.aciklama{font-size:12px;color:var(--ikincil);padding:8px 2px 0;line-height:1.5}
+.ekle-satir{margin-top:4px}
+.ekle-satir button{width:100%;border:1.5px dashed #CFC8BC;border-radius:14px;padding:12px 0;color:var(--ana);font-size:14px;font-weight:700}
+/* alt menü */
+.sekme{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);border-top:1px solid var(--cizgi);display:flex;justify-content:center;padding:8px 10px calc(10px + env(safe-area-inset-bottom));z-index:3}
+.sekme button{flex:1;max-width:130px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11.5px;font-weight:600;color:var(--soluk);position:relative;padding:2px 0}
+.sekme button.on{color:var(--ana)}
+.sekme .ik{width:24px;height:24px}
+.sekme .sayi{position:absolute;top:-4px;left:calc(50% + 6px);background:var(--kapali);color:#fff;font-size:10.5px;font-weight:700;min-width:18px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 5px;border:2px solid #fff}
+/* alt yaprak */
+.perde{position:fixed;inset:0;background:rgba(27,30,37,.42);opacity:0;pointer-events:none;transition:opacity .25s;z-index:4}
+.perde.ac{opacity:1;pointer-events:auto}
+.sayfa{position:fixed;left:50%;bottom:0;width:100%;max-width:520px;transform:translate(-50%,105%);transition:transform .3s cubic-bezier(.2,.8,.2,1);background:var(--kart);border-radius:28px 28px 0 0;padding:10px 20px calc(22px + env(safe-area-inset-bottom));box-shadow:0 -10px 30px rgba(0,0,0,.15);z-index:5;max-height:92dvh;overflow-y:auto}
+.sayfa.ac{transform:translate(-50%,0)}
+.tutac{width:44px;height:5px;border-radius:3px;background:#DAD5CC;margin:0 auto 12px}
+.sayfa h2{font-size:22px;font-weight:800;letter-spacing:-.02em;overflow-wrap:anywhere}
+.sayfa .alt{font-size:13px;color:var(--ikincil);margin:2px 0 6px}
+.sayfa label{font-size:11.5px;font-weight:700;color:var(--ikincil);display:block;margin:12px 0 6px 2px;text-transform:uppercase;letter-spacing:.04em}
+.bolum small{display:block;font-size:11.5px;font-weight:700;color:var(--ikincil);margin:12px 0 6px;text-transform:uppercase;letter-spacing:.04em}
+.iki{display:flex;gap:10px}.iki>div{flex:1}
+.sayfa .hata{color:#B93A2B;font-size:13px;min-height:18px;margin:10px 0 4px}
+.saatler{display:flex;gap:10px}
+.sayfa label.saat-kutu{flex:1;min-width:0;background:#F7F5F1;border-radius:16px;padding:8px 12px;margin:0;text-transform:none;letter-spacing:0}
+.saat-kutu small{font-size:11.5px;color:var(--ikincil);font-weight:700;display:block;margin:0}
+.saat-kutu input{border:0;background:transparent;padding:2px 0;font-size:26px;font-weight:800;letter-spacing:-.02em;text-align:left}
+.cubuk{position:relative;height:42px;margin-top:8px}
+.cubuk .yol{position:absolute;left:0;right:0;top:12px;height:14px;border-radius:7px;background:#EFECE6}
+.cubuk .secili{position:absolute;top:8px;height:22px;border-radius:8px;background:repeating-linear-gradient(135deg,#F7A397 0 6px,var(--kapali) 6px 12px);box-shadow:0 3px 8px rgba(240,97,79,.35)}
+.cubuk .rnd{position:absolute;top:15px;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:var(--ana)}
+.cubuk .rnd.cakisan{background:#fff;border:2.5px solid var(--yazi);width:12px;height:12px;top:13px;margin-left:-6px}
+.cubuk .olcek{position:absolute;left:0;right:0;top:32px;display:flex;justify-content:space-between;font-size:10.5px;color:var(--soluk);font-weight:700}
+.uyari-satir{display:flex;gap:10px;align-items:center;background:var(--uyari-acik);border-radius:14px;padding:11px 12px;font-size:13px;line-height:1.35;margin-top:12px}
+.uyari-satir .ik{color:var(--uyari)}
+.uyari-satir span{min-width:0;overflow-wrap:anywhere}
+.bilgi-kart{background:#F7F5F1;border-radius:16px;padding:4px 14px;margin:12px 0 6px}
+.bilgi-kart p{display:flex;justify-content:space-between;gap:10px;font-size:14px;padding:11px 0;border-bottom:1px dashed #DCD6CC}
+.bilgi-kart p:last-child{border:0}.bilgi-kart p span{color:var(--ikincil);overflow-wrap:anywhere}
+.bilgi-kart a{color:var(--ana-koyu);font-weight:700}
+.tost{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top));transform:translate(-50%,-150%);visibility:hidden;background:var(--yazi);color:#fff;padding:12px 18px;border-radius:16px;font-size:14px;font-weight:600;transition:transform .3s;z-index:9;max-width:calc(100% - 32px)}
+.tost.ac{transform:translate(-50%,0);visibility:visible}
+.tost.kir{background:var(--kapali)}
+.yukleniyor{position:fixed;top:0;left:0;height:3px;background:var(--ana);width:0;z-index:9;transition:width .4s}
+.yukleniyor.ac{width:70%}
+/* asistan */
+.as-ust{display:flex;align-items:center;gap:12px;padding:4px 0 12px;border-bottom:1px solid var(--cizgi)}
+.as-logo{width:42px;height:42px;border-radius:14px;background:var(--yazi);display:flex;align-items:center;justify-content:center}
+.as-logo i{width:12px;height:12px;border-radius:50%;background:var(--asistan);box-shadow:0 0 12px rgba(34,197,94,.8)}
+.as-logo i.kapali{background:#9A958C;box-shadow:none}
+#asSoruYeri .as-kart{margin-top:12px}
+.as-ust b{font-size:16px;font-weight:800;display:block}
+.as-ust small{font-size:12px;color:var(--ikincil);font-weight:600}
+.as-kart{background:var(--kart);box-shadow:var(--golge);border-radius:16px;padding:13px 14px;margin-bottom:10px}
+.as-kart p{font-size:14.5px;line-height:1.4;font-weight:600;overflow-wrap:anywhere}
+.as-kart small{display:block;font-size:12px;color:var(--ikincil);margin-top:4px}
+.as-satir{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.as-satir input{flex:1 1 100%}
+.as-ogret{display:flex;align-items:center;gap:10px;flex:1 1 100%;font-size:13px;color:var(--ikincil);line-height:1.35}
+.as-ogret input{width:22px;height:22px;flex:none;padding:0;margin:0;accent-color:var(--ana)}
+.as-sonuc{font-size:14.5px;line-height:1.4}
+.as-d{min-height:40px;padding:8px 16px;border-radius:12px;border:1.5px solid var(--ana);background:#fff;color:var(--ana);font-size:14px;font-weight:700}
+.as-d.vur{background:var(--ana);color:#fff}
+.as-d:disabled{opacity:.5}
+.as-sohbet{display:flex;flex-direction:column;gap:7px;padding:12px 0 6px;min-height:36dvh;max-height:calc(100dvh - 330px);overflow-y:auto;justify-content:flex-start}
+.as-sohbet>*{flex-shrink:0}
+.as-b{max-width:82%;padding:10px 13px;border-radius:18px;font-size:14.5px;line-height:1.38;overflow-wrap:anywhere;white-space:pre-wrap}
+.as-b.ben{align-self:flex-end;background:linear-gradient(160deg,var(--ana2),var(--ana));color:#fff;border-bottom-right-radius:6px}
+.as-b.asi{align-self:flex-start;background:var(--kart);box-shadow:var(--golge);border-bottom-left-radius:6px}
+.as-not{align-self:flex-start;font-size:12px;color:var(--ikincil);margin:-3px 0 0 6px}
+.oneriler{display:flex;gap:7px;padding:8px 0;overflow-x:auto;scrollbar-width:none}
+.oneriler::-webkit-scrollbar{display:none}
+.oneriler button{white-space:nowrap;font-size:13px;font-weight:700;padding:7px 12px;border-radius:12px;background:var(--kart);box-shadow:var(--golge)}
+.as-yaz{display:flex;gap:9px;align-items:center;padding:4px 0 0}
+.as-yaz input{flex:1;min-width:0;height:46px;border-radius:23px;border:0;box-shadow:var(--golge);padding:0 16px}
+.as-yaz .gonder{width:46px;height:46px;flex:none;border-radius:50%;background:linear-gradient(160deg,var(--ana2),var(--ana));display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 6px 14px rgba(13,148,136,.3)}
+.as-yaz .gonder:disabled{opacity:.5}
+/* C: öneri kartı + sabah şeridi (yalnız opacity/transform, 200 ms altı) */
+#asOneri .as-kart{margin-top:12px;transition:opacity .18s,transform .18s}
+#asOneri .as-kart.gider{opacity:0;transform:translateY(-6px)}
+#asOneri .as-kart small{margin-top:0;margin-bottom:5px}
+#asOneri .as-kart small.eski{margin:5px 0 0}
+.as-daha{margin-top:10px;background:none;border:0;padding:6px 0;color:var(--ana-koyu);font-size:13px;font-weight:700}
+.as-sabah{position:relative;background:var(--uyari-acik);border-left:4px solid var(--uyari);border-radius:12px;padding:10px 40px 10px 12px;margin-bottom:12px}
+.as-sabah[hidden]{display:none}
+.as-sabah small{display:block;font-size:11.5px;font-weight:800;color:var(--ikincil);margin-bottom:2px}
+.as-sabah p{font-size:14px;line-height:1.38;font-weight:600;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.as-sabah.acik p{display:block}
+.as-sabah-alt{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-top:6px}
+.as-sabah-alt .as-link{margin-right:auto}
+.as-sabah .as-d{min-height:34px;padding:5px 14px;font-size:13px}
+.as-link{background:none;border:0;padding:4px 0;color:var(--ana-koyu);font-size:13px;font-weight:700}
+.as-kapat{position:absolute;top:2px;right:2px;width:38px;height:38px;background:none;border:0;font-size:22px;line-height:1;color:var(--ikincil)}
+/* tanışma açıkken sohbet kendi içinde kaydırılmaz (özet kartının arkasında yarım balon kalmasın); sayfa sonunda alt menü kadar boşluk */
+#asistan.tn-acik .as-sohbet{max-height:none;overflow:visible;min-height:0}
+#asistan.kap{padding-bottom:calc(150px + env(safe-area-inset-bottom))}
+.tn-baslik{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px;font-size:13px}
+.tn-kart{margin-top:6px}
+.tn-satir{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--cizgi);padding:11px 2px;font-size:14.5px;font-weight:600;color:var(--yazi);overflow-wrap:anywhere}
+.tn-duzen{padding:8px 0;border-bottom:1px solid var(--cizgi)}
+.tn-duzen input[type=time],.tn-duzen input[type=text]{width:100%;margin:4px 0}
+.tn-et{display:block;font-size:12px;font-weight:700;color:var(--ikincil)}
+.tn-cift{display:flex;gap:8px}
+.tn-cift input{min-width:0}
+.tn-duzen .as-ogret input{width:22px;margin:0}
+.tn-hata{margin-top:8px;font-size:13px;color:var(--kapali);line-height:1.4}
+/* notlar */
+.not{background:var(--kart);box-shadow:var(--golge);border-radius:18px;padding:13px 14px;margin-bottom:10px}
+.not.hat{background:#ECE7FF}
+.not .etk{display:inline-block;font-size:11.5px;font-weight:800;color:#5B43C9;background:rgba(255,255,255,.65);border-radius:8px;padding:3px 8px;margin-bottom:6px}
+.not p{font-size:14.5px;line-height:1.4;font-weight:600;overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<div class="yukleniyor" id="yuk"></div>
+<div class="deneme" id="deneme" hidden>DENEME — sahte veri · PIN: 123456</div>
+
+<div class="serit kir" id="sinirSerit" hidden><span>Bugün çok sayıda çevrimiçi randevu geldi, kontrol edin.</span><button type="button">Tamam</button></div>
+<div class="serit" id="pinSerit" hidden><span>PIN'inizi en az 6 haneye çıkarın (tablo menüsü: Randevu sistemi → Yönetim PIN'ini değiştir).</span><button type="button">Tamam</button></div>
+
+<!-- PIN -->
+<section class="pin" id="pinEkran" hidden>
+  <div class="logo" id="pinDukkan">Yönetim</div>
+  <h1>Giriş</h1>
+  <p>Kurulumda verilen yönetim PIN'ini yazın.</p>
+  <form id="pinForm"><input id="pin" type="password" inputmode="numeric" autocomplete="one-time-code" maxlength="12" placeholder="••••••">
+  <div class="hata" id="pinHata"></div>
+  <button class="ana-d" id="pinDugme">Giriş yap</button></form>
+</section>
+
+<!-- CİHAZ ONAYI -->
+<section class="pin" id="cihazEkran" hidden>
+  <div class="logo">Cihaz onayı</div>
+  <h1 id="cihazKod">----</h1>
+  <p>Bu telefon henüz onaylı değil. Bu kodu şu iki yoldan biriyle onaylatın:<br><br>
+  <b>1)</b> Google tablonuzda <b>Randevu sistemi → Cihaz onayla</b> menüsünü açıp kodu yazın.<br>
+  <b>2)</b> Onaylı başka bir telefonda panel → <b>Ayarlar → Cihazlar</b> bölümünden onaylayın.<br><br>
+  Onaylanınca bu ekran kendiliğinden açılır.</p>
+  <div class="hata" id="cihazHata"></div>
+  <button class="ikinci-d" id="cihazVazgec">Vazgeç</button>
+</section>
+
+<!-- BUGÜN -->
+<main class="kap" id="gunluk" hidden>
+  <div class="selam"><div><small id="tarihRozet"></small><h2 id="gunBaslik">Bugün</h2></div><div class="avatar" id="avatar"></div></div>
+  <div class="gunler" id="gunler"></div>
+  <div class="hizli" id="ekleSira">
+    <button class="btn ana" id="randevuEkleD"><svg class="ik" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Randevu ekle</button>
+    <button class="btn ikinci" id="aralikKapatD"><svg class="ik" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg>Saat kapat</button>
+  </div>
+  <div class="hizli" id="topluSira" hidden><button class="btn ikinci" id="topluIptalD">Bu günün çevrimiçi randevularını iptal et</button></div>
+  <div id="hizliKutu"></div>
+  <div class="soru-kart" id="soruKart" hidden>
+    <svg class="ik" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M12 8.5v4M12 15.5v.01"/></svg>
+    <p><b id="soruBaslik"></b><span id="soruMetin"></span></p>
+    <button class="kucuk-btn" id="soruCevapla" type="button">Cevapla</button>
+  </div>
+  <div class="liste-baslik"><h3 id="listeBaslik">Bugünün randevuları</h3><span id="listeOzet"></span></div>
+  <div class="cizelge" id="cizelge"></div>
+</main>
+
+<!-- ASİSTAN -->
+<main class="kap" id="asistan" hidden>
+  <div class="as-sabah" id="asSabah" hidden><small>Bu sabah</small><p id="asSabahMetin"></p><div class="as-sabah-alt"><button type="button" class="as-link" id="asSabahDevam" hidden>devamı</button><button type="button" class="as-d vur" id="asSabahDuzelt">Düzelt</button></div><button type="button" class="as-kapat" id="asSabahKapat" aria-label="Bu sabah özetini bugün gizle">×</button></div>
+  <div class="as-ust"><div class="as-logo"><i id="asDurum" class="kapali"></i></div><div><b>Asistan</b><small id="asDurumYazi">Bağlanıyor…</small></div></div>
+  <div id="asOneri"></div>
+  <div id="asTanisma" hidden></div>
+  <div id="asSoruYeri"></div>
+  <div class="as-sohbet" id="asSohbet"></div>
+  <div class="oneriler" id="oneriler"><button type="button">Bugün kaç randevu var?</button><button type="button">Yarın kapalıyım</button><button type="button">Öğle arası ver</button></div>
+  <form class="as-yaz" id="asForm"><input id="asGiris" autocomplete="off" placeholder="Asistana yazın…"><button class="gonder" id="asGonder" type="submit" aria-label="Gönder"><svg class="ik" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button></form>
+</main>
+
+<!-- NOTLAR -->
+<main class="kap" id="notlar" hidden>
+  <div class="sayfa-bas"><h2>Notlar</h2></div>
+  <div id="notSoruYeri"><div id="asBekleyen"></div></div>
+  <div id="hatirlatmalar"></div>
+  <p class="bos-yazi" id="notBos" hidden>Henüz not yok</p>
+</main>
+
+<!-- AYARLAR -->
+<main class="kap" id="ayarlar" hidden>
+  <div class="sayfa-bas"><h2>Ayarlar</h2><span class="logo dukkanAd"></span></div>
+  <section id="saatler">
+    <div class="bolum-bas"><span>Saatler</span></div>
+    <div class="liste" id="haftaListe"></div>
+    <div class="bolum-bas"><span>Öğle arası (her açık gün)</span></div>
+    <div class="gun-satir"><div class="alt-s"><input type="time" id="araBas"><span>–</span><input type="time" id="araBit"><button class="mini" id="araSil">Yok</button></div></div>
+    <button class="ana-d" id="saatKaydet">Kaydet</button>
+    <div class="bolum-bas"><span>Kapalı günler (tatil, izin)</span><button id="gunKapatD">+ Gün kapat</button></div>
+    <div class="liste" id="kapaliGunler"></div>
+  </section>
+  <section id="hizmetler">
+    <div class="bolum-bas"><span>Hizmetler</span></div>
+    <div id="hizmetListe"></div>
+    <div class="ekle-satir"><button id="hizmetEkleD">+ Hizmet ekle</button></div>
+    <div class="bolum-bas"><span>Randevu aralığı</span></div>
+    <div class="cipler" id="araliklar"></div>
+    <p class="aciklama">Müşteriye saatler bu aralıkla gösterilir (örneğin 30 dk: 09.00, 09.30, 10.00…).</p>
+  </section>
+  <section id="cihazlar">
+    <div class="bolum-bas"><span>Cihazlar (yönetime girebilen telefonlar)</span></div>
+    <div class="liste" id="cihazListe"></div>
+    <p class="aciklama">Çalınan ya da kaybolan telefonu "Kaldır" ile çıkarın. Yeni telefon: PIN ile girin, ekrandaki kodu tabloda Randevu sistemi → Cihaz onayla menüsüne yazın ya da buradan onaylayın (yeni telefondaki 4 haneli kodu sorar). Şüphelenirseniz: PIN'i değiştirin, tanımadığınız cihazları kaldırın.</p>
+  </section>
+  <section id="bildirimAyar">
+    <div id="soruAyar"><div class="bolum-bas" style="margin-top:18px"><span>Asistan</span></div>
+      <div class="satir"><span>Müşteri sorularını Asistan ekranında da göster</span><button class="anah kapali" id="soruAsistanda" type="button" aria-label="Müşteri sorularını Asistan ekranında da göster"></button></div>
+      <p class="aciklama">Açıkken cevap bekleyen sorular Notlar'ın yanında Asistan ekranının üstünde de görünür. Bu ayar yalnız bu cihazda geçerlidir.</p></div>
+    <div class="as-kart" id="pushKart" hidden style="margin-top:18px"><p id="pushMetin"></p><div class="as-satir"><button class="as-d vur" id="pushDugme" type="button" hidden>Bildirimlere izin ver</button></div></div>
+  </section>
+  <div style="padding-top:20px"><button class="ikinci-d" id="cikis">Çıkış yap</button></div>
+</main>
+
+<nav class="sekme" id="sekme" hidden>
+  <button data-s="gunluk" class="on"><svg class="ik" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Bugün</button>
+  <button data-s="asistan" id="asSekme" hidden><svg class="ik" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>Asistan<span class="sayi" id="asSayi" hidden>0</span></button>
+  <button data-s="notlar"><svg class="ik" viewBox="0 0 24 24"><path d="M6 3.5h9l4 4V20a.5.5 0 0 1-.5.5h-12A.5.5 0 0 1 6 20z"/><path d="M9.5 11h6M9.5 15h4"/></svg>Notlar</button>
+  <button data-s="ayarlar"><svg class="ik" viewBox="0 0 24 24"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>Ayarlar</button>
+</nav>
+
+<div class="perde" id="perde"></div>
+<div class="sayfa" id="sayfa"><div class="tutac"></div><div id="sayfaIc"></div></div>
+<div class="tost" id="tost"></div>
+
+<script src="ayar.js"></script>
+<script src="yonetim.js"></script>
+</body>
+</html>
